@@ -1,0 +1,16 @@
+{
+  "name": "sirt-monorepo",
+  "private": true,
+  "packageManager": "pnpm@9.7.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "pnpm -C apps/api dev",
+    "build": "pnpm -C apps/api build",
+    "test": "pnpm -C apps/api test"
+  }
+}

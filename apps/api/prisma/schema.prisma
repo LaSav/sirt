@@ -1,0 +1,77 @@
+// datasource & generator
+generator client {
+provider = "prisma-client-js"
+}
+
+
+datasource db {
+provider = "postgresql"
+url = env("DATABASE_URL")
+}
+
+
+model User {
+id String @id @default(cuid())
+email String @unique
+password String // hashed
+role Role
+createdAt DateTime @default(now())
+incidents Incident[] @relation("Reporter")
+notes Note[]
+}
+
+
+enum Role {
+VIEWER
+ANALYST
+ADMIN
+}
+
+
+model Incident {
+id String @id @default(cuid())
+title String
+description String
+severity Severity
+status Status @default(OPEN)
+reporter User @relation("Reporter", fields: [reporterId], references: [id])
+reporterId String
+assignee User? @relation("Assignee", fields: [assigneeId], references: [id])
+assigneeId String?
+notes Note[]
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+resolvedAt DateTime?
+
+
+@@index([status, severity, createdAt])
+@@fulltext([title, description])
+}
+
+
+enum Severity { LOW MEDIUM HIGH CRITICAL }
+
+
+enum Status { OPEN TRIAGE IN_PROGRESS RESOLVED CLOSED }
+
+
+model Note {
+id String @id @default(cuid())
+incident Incident @relation(fields: [incidentId], references: [id])
+incidentId String
+author User @relation(fields: [authorId], references: [id])
+authorId String
+body String
+createdAt DateTime @default(now())
+}
+
+
+model AuditLog {
+id String @id @default(cuid())
+actorId String
+action String
+entity String
+entityId String
+meta Json
+createdAt DateTime @default(now())
+}

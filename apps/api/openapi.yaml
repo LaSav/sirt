@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info:
+  title: SIRT API
+  version: 0.1.0
+paths:
+  /auth/login:
+    post:
+      summary: Login and receive session cookie
+  /auth/logout:
+    post:
+      summary: Logout
+  /auth/me:
+    get:
+      summary: Current user
+  /incidents:
+    get:
+      summary: List incidents
+    post:
+      summary: Create incident (ANALYST/ADMIN)
+  /incidents/{id}:
+    get:
+      summary: Get incident by id
+    patch:
+      summary: Update incident (ANALYST/ADMIN)
+  /incidents/{id}/notes:
+    post:
+      summary: Create note on incident (ANALYST/ADMIN)
