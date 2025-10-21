@@ -1,22 +1,17 @@
 import { Request, Response, NextFunction } from 'express'
 import { can } from '../rbac'
-
-declare module 'express-session' {
-  interface SessionData {
-    user?: { id: string; role: string; email: string }
-  }
-}
+import type { Role } from '../rbac'
 
 declare global {
   namespace Express {
     interface Request {
-      user?: { id: string; role: string; email: string }
+      user?: { id: string; role: Role; email: string }
     }
   }
 }
 
 export const requirePerm =
-  (check: (role: string) => boolean) =>
+  (check: (role: Role) => boolean) =>
   (req: Request, res: Response, next: NextFunction) => {
     const role = req.user?.role
     if (!role || !check(role))

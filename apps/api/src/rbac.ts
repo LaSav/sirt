@@ -1,4 +1,4 @@
-type Role = 'VIEWER' | 'ANALYST' | 'ADMIN'
+export type Role = 'VIEWER' | 'ANALYST' | 'ADMIN'
 export const can = {
   readIncident: (_: Role) => true,
   createIncident: (r: Role) => r !== 'VIEWER',

@@ -5,6 +5,7 @@ import cookieSession from 'cookie-session'
 import csrf from 'csurf'
 import { authRouter } from './routes/auth'
 import { incidentsRouter } from './routes/incidents'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 
@@ -29,8 +30,10 @@ app.use((req, _res, next) => {
   next()
 })
 
+app.use(cookieParser())
+
 // CSRF (use cookie token)
-const csrfProtection = csrf({ cookie: true })
+const csrfProtection: express.RequestHandler = csrf({ cookie: true })
 app.use((req, res, next) => {
   // allow GETs without token, protect state-changing below per-route
   next()
