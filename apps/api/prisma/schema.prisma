@@ -11,13 +11,14 @@ url = env("DATABASE_URL")
 
 
 model User {
-id String @id @default(cuid())
-email String @unique
-password String // hashed
-role Role
-createdAt DateTime @default(now())
-incidents Incident[] @relation("Reporter")
-notes Note[]
+  id String @id @default(cuid())
+  email String @unique
+  password String  
+  role Role
+  createdAt DateTime @default(now())
+  incidents Incident[] @relation("Reporter")
+  assignedIncidents Incident[] @relation("Assignee")
+  notes Note[]
 }
 
 
@@ -45,14 +46,23 @@ resolvedAt DateTime?
 
 
 @@index([status, severity, createdAt])
-@@fulltext([title, description])
 }
 
 
-enum Severity { LOW MEDIUM HIGH CRITICAL }
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
 
-
-enum Status { OPEN TRIAGE IN_PROGRESS RESOLVED CLOSED }
+enum Status {
+  OPEN
+  TRIAGE
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
 
 
 model Note {
